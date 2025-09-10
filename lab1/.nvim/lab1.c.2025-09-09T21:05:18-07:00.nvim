@@ -1,0 +1,38 @@
+#define _POSIX_C_SOURCE 200809L
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main() {
+  char *buff = NULL; // ptr for getline
+  size_t size = 0;   // size of buffer for getline
+  printf("Please enter some text:");
+
+  ssize_t nread = getline(&buff, &size, stdin);
+
+  // read full line
+  if (nread == -1) {
+    perror("getline");
+    free(buff);
+    exit(EXIT_FAILURE);
+  }
+
+  // remove trailing newline if any
+  if (buff[nread - 1] == '\n') {
+    buff[nread - 1] = '\0';
+  }
+
+  // tokenize using strtok_r
+  char *saveptr;
+  char *ret = strtok_r(buff, " ", &saveptr);
+  printf("Tokens:\n");
+
+  while (ret != NULL) {
+    printf("\t%s\n", ret);
+    ret = strtok_r(NULL, " ", &saveptr);
+  }
+
+  // free dynamically allocated buffer
+  free(buff);
+  return 0;
+}
