@@ -1,0 +1,17 @@
+#include <unistd.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define BUF_SIZE 128
+
+// 2 128-byte blocks and each has a header
+struct header {
+  uint64_t size;
+  struct header *next;
+}
+
+
+
+
